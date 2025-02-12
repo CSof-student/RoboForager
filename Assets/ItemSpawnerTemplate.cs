@@ -50,6 +50,10 @@ public class ItemSpawnerTemplate : MonoBehaviour
     }
 
     void SpawnItem() {
+        // if (itemPrefab == null) {
+        //     Debug.LogError("ItemSpawnerTemplate: itemPrefab is null! Assign a prefab in the Inspector.");
+        // return; // Prevents further execution if itemPrefab is missing
+        //}
          Vector3 randomPosition = new Vector3(
                 Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
                 Random.Range(0, spawnAreaSize.y), // Adjust for height variation if needed
@@ -60,7 +64,7 @@ public class ItemSpawnerTemplate : MonoBehaviour
 
             Instantiate(itemPrefab, randomPosition, Quaternion.identity);
             currentItemCount += 1;
-            Debug.Log("current Items in game: " + currentItemCount);
+            //Debug.Log("current Items in game: " + currentItemCount);
     }
 
     public IEnumerator RespawnItemWithDelay()

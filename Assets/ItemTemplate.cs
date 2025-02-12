@@ -38,6 +38,7 @@ public class ItemTemplate : MonoBehaviour
                 itemSpawner.ItemCollected();
 
                 // Destroy the item after pickup
+                // 
                 Destroy(gameObject);
             }
         }
