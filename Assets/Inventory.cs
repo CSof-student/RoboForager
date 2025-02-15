@@ -9,15 +9,18 @@ public class Inventory : MonoBehaviour
     
     Dictionary<String, int> Storage = new Dictionary<String, int>();
     Dictionary<String, int> ItemCapacities = new Dictionary<string, int>();
-    public TextMeshProUGUI itemText; 
+    public TextMeshProUGUI item1Text; 
+    public TextMeshProUGUI ScrapMetalText; 
     //IG add more of these as more items exist
     
     void Start()
     {
         //add all the itemcapacities
         ItemCapacities.Add("Item1", 25);
+        ItemCapacities.Add("ScrapMetal",25);
         //add all the items to the dictionary at 0 stored
         Storage.Add("Item1", 0);
+        Storage.Add("ScrapMetal", 0);
     }
 
     // Update is called once per frame
@@ -48,7 +51,8 @@ public class Inventory : MonoBehaviour
 
     private void updateUI(){
         //item1 is a placeholder for now
-        itemText.text = "Storage "+ getItemNumber("Item1").ToString()+ "/" + ItemCapacities["Item1"];
+        item1Text.text = "Storage "+ getItemNumber("Item1").ToString()+ "/" + ItemCapacities["Item1"];
+        ScrapMetalText.text = "Storage "+ getItemNumber("ScrapMetal").ToString()+ "/" + ItemCapacities["ScrapMetal"];
     }
 
     public int getItemCapacity(String itemName) {

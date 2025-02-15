@@ -6,6 +6,7 @@ public class ItemSpawnerTemplate : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject itemPrefab;
+    public GameObject ScrapMetalPrefab;
     public int spawnAmount = 15;
 
     public int currentItemCount = 0;
@@ -44,12 +45,13 @@ public class ItemSpawnerTemplate : MonoBehaviour
     {
         for (int i = 0; i < spawnAmount; i++)
         {
-            SpawnItem();
+            SpawnItem(itemPrefab);
+            SpawnItem(ScrapMetalPrefab);
             yield return new WaitForSeconds(0.1f); // Slight delay to prevent lag spikes
         }
     }
 
-    void SpawnItem() {
+    void SpawnItem(GameObject item) {
         // if (itemPrefab == null) {
         //     Debug.LogError("ItemSpawnerTemplate: itemPrefab is null! Assign a prefab in the Inspector.");
         // return; // Prevents further execution if itemPrefab is missing
@@ -62,21 +64,32 @@ public class ItemSpawnerTemplate : MonoBehaviour
                 
             );
 
-            Instantiate(itemPrefab, randomPosition, Quaternion.identity);
+            Instantiate(item, randomPosition, Quaternion.identity);
+            
             currentItemCount += 1;
             //Debug.Log("current Items in game: " + currentItemCount);
     }
 
-    public IEnumerator RespawnItemWithDelay()
+    public IEnumerator RespawnItemWithDelay(GameObject old)
     {
         yield return new WaitForSeconds(respawnDelay); // Wait before spawning
-        SpawnItem();
+        Vector3 randomPosition = new Vector3(
+                Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
+                Random.Range(0, spawnAreaSize.y), // Adjust for height variation if needed
+                Random.Range(-spawnAreaSize.z / 2, spawnAreaSize.z / 2)
+
+                
+            );
+        old.transform.position = randomPosition; // Move item to a new position
+        old.SetActive(true); // Reactivate the old item
+        //SpawnItem();
+        //Destroy(old);
     }
 
-    public void ItemCollected()
+    public void ItemCollected(GameObject oldItem)
     {
         currentItemCount--; // Reduce count when an item is picked up
-        StartCoroutine(RespawnItemWithDelay()); // Trigger delayed respawn
+        StartCoroutine(RespawnItemWithDelay(oldItem)); // Trigger delayed respawn
     }
 
     

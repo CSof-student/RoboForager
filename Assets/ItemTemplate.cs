@@ -12,11 +12,11 @@ public class ItemTemplate : MonoBehaviour
     ItemSpawnerTemplate itemSpawner;
 
     public int itemMultiplyer = 1;
-    void Start()
+    public void Start()
     {
         inventory = FindObjectsByType<Inventory>(FindObjectsSortMode.None)[0];
         itemSpawner = FindObjectsByType<ItemSpawnerTemplate>(FindObjectsSortMode.None)[0];
-        itemName = "Item1"; // temp
+        setItemName("Item1"); // temp
     }
 
     // Update is called once per frame
@@ -27,7 +27,9 @@ public class ItemTemplate : MonoBehaviour
     private void OnTriggerEnter (Collider other) {
         if (other.CompareTag("Player"))
         {
+
             // Add the item to inventory (placeholder function)
+            Debug.Log("made contact with: "+ itemName);
             Debug.Log("Item capacity: " + inventory.getItemCapacity(itemName));
             if (inventory.getItemCapacity(itemName) >= inventory.getItemNumber(itemName) + 1*itemMultiplyer) {
 
@@ -35,12 +37,15 @@ public class ItemTemplate : MonoBehaviour
                 Debug.Log("Picked up: " + itemName);
                 inventory.addItem(itemName, 1); // add multiplyer later potentially
                 Debug.Log("Inventory now contains: " + inventory.getItemNumber(itemName));
-                itemSpawner.ItemCollected();
+                itemSpawner.ItemCollected(gameObject);
 
                 // Destroy the item after pickup
                 // 
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
+    }
+    public void setItemName(string name) {
+        itemName = name;
     }
 }
